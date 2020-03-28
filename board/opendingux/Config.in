@@ -1,5 +1,6 @@
 menu "OpenDingux packages"
 
+	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/dingux-commander/Config.in"
 	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/gmenu2x/Config.in"
 	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/libhugetlbfs/Config.in"
 	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/libini/Config.in"
