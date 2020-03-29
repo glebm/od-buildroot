@@ -1,31 +1,33 @@
-From 1c4e5c09c8ac700d4f2633b841a12ec2355743e5 Mon Sep 17 00:00:00 2001
-From: Paul Cercueil <paul@crapouillou.net>
-Date: Fri, 6 Dec 2019 14:56:43 +0100
+From 7ff39ba89a5cc4264701d1413318b90341ee2480 Mon Sep 17 00:00:00 2001
+From: Gleb Mazovetskiy <glex.spb@gmail.com>
+Date: Sun, 29 Mar 2020 16:26:11 +0100
 Subject: [PATCH] Prevent Mesa from including X11 headers if X11 is disabled
 
 This fixes compilation errors that occur when trying to compile SDL2 for
 a X11-less target. The errors were due to the fact that Mesa will
 include X11 headers unless a couple of macros are defined.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- configure.ac | 3 +++
- 1 file changed, 3 insertions(+)
+configure is modified directly instead of configure.ac because
+autoreconf fails with SDL2 and the current buildroot
 
-diff --git a/configure.ac b/configure.ac
-index b2ae68bed..240bf9a22 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -2035,6 +2035,9 @@ AS_HELP_STRING([--enable-video-x11-vm], [use X11 VM extension for fullscreen [[d
-                 SUMMARY_video_x11="${SUMMARY_video_x11} xvidmode"
-             fi
-         fi
-+    else
-+		# Prevent Mesa from including X11 headers
-+        EXTRA_CFLAGS="$EXTRA_CFLAGS -DMESA_EGL_NO_X11_HEADERS -DEGL_NO_X11"
-     fi
- }
- 
+Adapted from a configure.ac patch by Paul Cercueil.
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 9ef0404..031f6d1 100755
+--- a/configure
++++ b/configure
+@@ -15963,7 +15963,7 @@ BUILD_CFLAGS="$CFLAGS $CPPFLAGS -DUSING_GENERATED_CONFIG_H"
+ if test "x$orig_CFLAGS" = x; then
+     BUILD_CFLAGS=`echo $BUILD_CFLAGS | sed 's/-O2/-O3/'`
+ fi
+-EXTRA_CFLAGS="$INCLUDE $BASE_CFLAGS"
++EXTRA_CFLAGS="$INCLUDE $BASE_CFLAGS -DMESA_EGL_NO_X11_HEADERS -DEGL_NO_X11"
+ BUILD_LDFLAGS="$LDFLAGS"
+ EXTRA_LDFLAGS="$BASE_LDFLAGS"
+ ## These are common directories to find software packages
 -- 
-2.24.0
+2.20.1
 
