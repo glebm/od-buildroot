@@ -1,5 +1,6 @@
 menu "OpenDingux packages"
 comment "Emulators"
+	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/fba/Config.in"
 	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/pcsx4all/Config.in"
 	source "$BR2_EXTERNAL_OPENDINGUX_PATH/package/pocketsnes/Config.in"
 
